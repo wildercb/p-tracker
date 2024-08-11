@@ -574,7 +574,7 @@ return (
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: 1200, mb: 3 }}>
-        <GlitchText variant="h2" component="h1" data-text="Neon Pantry Hub">
+        <GlitchText variant="h2" component="h1" data-text="Pantry Hub">
           Pantry Hub
         </GlitchText>
         <NeonButton 

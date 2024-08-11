@@ -197,7 +197,7 @@ export default function Home() {
             Pantry Tracker
           </GlitchText>
           <Typography variant="h5" align="center" color="secondary" paragraph>
-            Manage your inventory in the neon-lit future
+            Manage your inventory
           </Typography>
           <Paper elevation={3} sx={{ mt: 3, p: 3, width: '100%', background: 'rgba(10, 10, 10, 0.8)', backdropFilter: 'blur(10px)' }}>
             <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} centered textColor="secondary" indicatorColor="secondary">
