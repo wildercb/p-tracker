@@ -431,62 +431,59 @@ export default function Dashboard() {
     updateInventory()
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-    
-    if (!itemName.trim()) {
-      console.log("Item name is empty, returning");
-      return;
-    }
+  // ... existing code ...
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log("Form submitted");
   
-    setLoading(true);
-    console.log("Setting loading to true");
-  
-    try {
-      console.log("Preparing new item object");
-      const newItem = {
-        name: itemName,
-        quantity: itemQuantity,
-        category: itemCategory,
-        expiration: itemExpiration,
-        notes: itemNotes
-      };
-      console.log("New item object:", newItem);
-  
-      console.log("Preparing to add document to Firestore");
-      const docRef = doc(firestore, 'inventory', itemName.toLowerCase());
-      console.log("Document reference created:", docRef);
-  
-      console.log("Attempting to set document in Firestore");
-      await setDoc(docRef, newItem);
-      console.log("Document successfully added to Firestore");
-  
-      console.log("Updating local state");
-      setInventory(prev => {
-        const updated = [{ id: itemName.toLowerCase(), ...newItem }, ...prev];
-        console.log("Updated inventory:", updated);
-        return updated;
-      });
-  
-      console.log("Closing modal");
-      handleClose();
-  
-      console.log("Showing success snackbar");
-      showSnackbar("Item added successfully");
-  
-      console.log("Refreshing inventory");
-      await updateInventory();
-      console.log("Inventory refresh complete");
-  
-    } catch (error) {
-      console.error("Error in handleSubmit:", error);
-      showSnackbar("Failed to add item: " + error.message, "error");
-    } finally {
-      console.log("Setting loading to false");
-      setLoading(false);
-    }
-  };
+  if (!itemName.trim()) {
+    console.log("Item name is empty, returning");
+    showSnackbar("Item name cannot be empty", "error");
+    return;
+  }
+
+  setLoading(true);
+  console.log("Setting loading to true");
+
+  try {
+    console.log("Preparing new item object");
+    const newItem = {
+      name: itemName,
+      quantity: itemQuantity,
+      category: itemCategory,
+      expiration: itemExpiration,
+      notes: itemNotes
+    };
+    console.log("New item object:", newItem);
+
+    console.log("Preparing to add document to Firestore");
+    const docRef = doc(firestore, 'inventory', itemName.toLowerCase());
+    console.log("Document reference created:", docRef);
+
+    console.log("Attempting to set document in Firestore");
+    await setDoc(docRef, newItem);
+    console.log("Document successfully added to Firestore");
+
+    console.log("Closing modal");
+    handleClose();
+
+    console.log("Showing success snackbar");
+    showSnackbar("Item added successfully");
+
+    console.log("Refreshing inventory");
+    await updateInventory();
+    console.log("Inventory refresh complete");
+
+  } catch (error) {
+    console.error("Error in handleSubmit:", error);
+    showSnackbar("Failed to add item: " + error.message, "error");
+  } finally {
+    console.log("Setting loading to false");
+    setLoading(false);
+  }
+};
+
   const removeItem = async (item) => {
     try {
       const docRef = doc(collection(firestore, 'inventory'), item.id)
@@ -578,7 +575,7 @@ return (
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: 1200, mb: 3 }}>
         <GlitchText variant="h2" component="h1" data-text="Neon Pantry Hub">
-          Neon Pantry Hub
+          Pantry Hub
         </GlitchText>
         <NeonButton 
           variant="outlined" 
@@ -807,13 +804,10 @@ return (
               onChange={(e) => setItemNotes(e.target.value)}
             />
             <NeonButton
-              type="button" // Change this from "submit" to "button"
+              type="button"
               variant="contained"
               disabled={!itemName.trim() || loading}
-              onClick={() => {
-                console.log("Button clicked");
-                handleSubmit(new Event('submit'));
-              }}
+              onClick={handleSubmit}
               sx={{ bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
             >
               {loading ? 'Adding...' : 'Add Item'}
